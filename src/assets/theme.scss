@@ -1,0 +1,81 @@
+$back: #141414;
+$back-lighter: #292929;
+$main: #1A70C7;
+$front:#e5ecf0d8;
+* {
+    color: $front;
+}
+
+body,
+html {
+    background-color: $back;
+}
+
+h4 {
+    text-decoration: underline;
+    text-decoration-color: $main;
+}
+
+a:link,
+a:visited {
+    text-decoration: underline;
+    text-decoration-color: $main;
+    transition: 0.3s ease-in-out;
+    margin: 0 20px;
+}
+
+a:hover,
+a:active {
+    color: $main;
+    text-underline-offset: 3px;
+}
+
+.articles-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.article {
+    width: 40%;
+    border: 1px solid $main;
+    border-radius: 3px;
+    background-color: $back-lighter;
+    margin: 30px;
+    padding: 20px;
+}
+
+button,
+.btn {
+    border: 1px solid $main;
+    border-radius: 3px;
+    background-color: transparent;
+    padding: 10px;
+}
+
+button:hover,
+.btn:hover {
+    background-color: $main;
+}
+
+.form {
+    width: 40%;
+}
+
+.input {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid $main;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 0 0 20px 0;
+}
+
+.input:focus {
+    outline: none;
+}
+
+nav {
+    padding: 30px;
+    margin-bottom: 30px;
+}

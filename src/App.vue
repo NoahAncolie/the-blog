@@ -1,20 +1,22 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import { useCounterStore } from './store/useCounter.ts'
-import { storeToRefs, mapActions } from 'pinia'
-import "./assets/theme.scss"
+import { RouterLink, RouterView } from "vue-router";
+import { useUserStore } from "./store/useUser";
+import { storeToRefs, mapActions } from "pinia";
+import "./assets/theme.scss";
+const userStore = useUserStore();
 
+const { id } = storeToRefs(userStore);
 </script>
 
 <template>
- <header>
-   <RouterLink to="/login">Login</RouterLink>
-    <div class="wrapper">
-      <button @click="getApiInfos">Click me</button>
-    </div>
+  <header>
+    <nav>
+      <RouterLink v-if="!id" to="/login">Login</RouterLink>
+      <RouterLink v-if="!id" to="/register">Register</RouterLink>
+      <RouterLink v-if="id" to="/poster">Poster</RouterLink>
+      <RouterLink to="/" id="menu-link">Home</RouterLink>
+    </nav>
   </header>
 
-  <RouterView /> 
-
-
+  <RouterView />
 </template>

@@ -1,56 +1,65 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { useUserStore } from '../store/useUser'
+import { storeToRefs, mapActions } from 'pinia'
 
-const email = ref("")
-const password = ref("")
+const userStore = useUserStore()
 
-const onEmail = (event) =>  {
-    email.value = event.target.value
-}
+const {email} = storeToRefs(userStore)
+const { saveUser } = userStore
+
+const logEmail = ref("");
+const logPassword = ref("");
+
+const onEmail = (event) => {
+  logEmail.value = event.target.value;
+};
 
 const onPassword = (event) => {
-    password.value = event.target.value
-}
+  logPassword.value = event.target.value;
+};
 
-const onLogin = (event) => {
-    event.preventDefault();
+const getApiInfos = (event) => {
+  event.preventDefault();
+  if (logPassword.value === "" || logEmail.value === "") {
+    let error = document.getElementById("error-alert");
+    error.innerHTML = "Les champs doivent être remplis.";
+    error.style.color = "red";
+    return null;
+  }
 
-    if (password.value === "" || email.value === "") {
-        let error = document.getElementById("error-alert")
-        error.innerHTML = "Les champs doivent être remplis."
-        error.style.color = "red"
-        return (null)
-    }
   const data = {
     user: {
-      email: email,
-      password: password
-      }
-    }
-  fetch('http://localhost:3000/users/sign_in', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      email: logEmail.value,
+      password: logPassword.value,
+    },
+  };
+  fetch("http://localhost:3000/users/sign_in", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      console.log([...response.headers.get("authorization")].join(''));
+      return response.json();
     })
     .then((response) => {
-      console.log([...response.headers.get('authorization')].join(''))
-      return response.json()
-    })
-    .then((response) => {
-      console.log(response)
-    })
-
-}
+      console.log(response);
+      saveUser(response.user.email, response.user.id)
+    });
+    document.getElementById('menu-link').click()
+};
 </script>
 
 <template>
-<p id="error-alert"></p>
-  <p>{{ email }}</p>
-  <form @submit="onLogin">
-    <input type="text" @change="onEmail" id="email" name="email"/>
-    <input type="text" @change="onPassword" id="password" name="password"/>
-    <input type="submit" value="Se connecter" />
+  <h1 style="margin: 0 50% 20px 50%">Connexion</h1>
+  <div class="articles-container">
+  <form @submit="getApiInfos" class="form">
+    <input type="text" @change="onEmail" id="email" name="email" class="input" />
+    <input type="password" @change="onPassword" id="password" name="password" class="input" />
+    <input type="submit" value="Se connecter" class="btn"/>
   </form>
+  </div>
 </template>
